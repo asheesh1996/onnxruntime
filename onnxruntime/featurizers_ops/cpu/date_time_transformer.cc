@@ -12,6 +12,20 @@
 namespace onnxruntime {
 namespace featurizers {
 
+std::string GetDateTimeTransformerDataDir(void) {
+  // This code can be run in a variety of different ways, and the data directory could
+  // be impacted by the environment. Search in a variety of different locations.
+
+  // Dev environment
+
+
+  // Python environment
+
+
+  // Use the default logic
+  return "";
+}
+
 class DateTimeTransformer final : public OpKernel {
  public:
   explicit DateTimeTransformer(const OpKernelInfo& info) : OpKernel(info) {
@@ -25,7 +39,8 @@ class DateTimeTransformer final : public OpKernel {
           const uint8_t* const state_data(state_tensor->Data<uint8_t>());
 
           Microsoft::Featurizer::Archive archive(state_data, state_tensor->Shape().Size());
-          return Microsoft::Featurizer::Featurizers::DateTimeTransformer(archive);
+
+          return Microsoft::Featurizer::Featurizers::DateTimeTransformer(archive, GetDateTimeTransformerDataDir());
         }());
 
     // Get the input
