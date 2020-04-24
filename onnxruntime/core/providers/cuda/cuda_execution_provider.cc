@@ -127,6 +127,7 @@ CUDAExecutionProvider::CUDAExecutionProvider(const CUDAExecutionProviderInfo& in
   size_t free = 0;
   size_t total = 0;
   CUDA_CALL_THROW(cudaMemGetInfo(&free, &total));
+  cuda_mem_limit_ = std::min(free, cuda_mem_limit_);
 
   DeviceAllocatorRegistrationInfo default_memory_info(
       {OrtMemTypeDefault,
